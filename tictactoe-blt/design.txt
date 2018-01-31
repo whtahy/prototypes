@@ -1,0 +1,5 @@
+1  Initialize (draw board, start game, etc)
+2  Game loop:
+   a  Await input
+   b  Update gamestate
+   c  Update display
