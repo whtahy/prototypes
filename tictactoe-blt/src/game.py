@@ -48,5 +48,35 @@ def switch(player):
         return player_x
 
 
-def victory(game, loc):
-    pass
+def victory(game, player):
+    a = [victory_row(game, player, row) for row in range(board_rows)]
+    b = [victory_col(game, player, col) for col in range(board_cols)]
+    c = victory_diag(game, player)
+
+    return any(a) or any(b) or c
+
+
+def victory_row(game, player, row):
+    for col in range(board_cols):
+        if game.state[row][col] != player:
+            return False
+    return True
+
+
+def victory_col(game, player, col):
+    for row in range(board_rows):
+        if game.state[row][col] != player:
+            return False
+    return True
+
+
+def victory_diag(game, player):
+    for row in range(board_rows):
+        col = row
+        if game.state[row][col] != player:
+            return False
+    for row in range(board_rows):
+        col = board_cols - 1 - row
+        if game.state[row][col] != player:
+            return False
+    return True
