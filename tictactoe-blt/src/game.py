@@ -13,9 +13,14 @@ class Game:
             state = [([None] * board_cols) for _ in range(board_rows)]
         self.turn = turn
         self.state = state
+        self.winner = None
 
     def __repr__(self):
         s = f'Turn: {self.turn}\n'
+        if self.winner:
+            s += f'Winner: {self.winner}\n'
+        else:
+            s += f'Player: {get_player(self)}\n'
         s += 'State:\n'
         for row in self.state:
             s += str(row) + '\n'
@@ -27,14 +32,19 @@ class Game:
 
 def move(game, loc):
     row, col = loc
-    if game.state[row][col]:
+    if game.state[row][col] or game.winner:
         pass
     else:
-        game.state[row][col] = player(game)
-        game.turn += 1
+        player = get_player(game)
+        game.state[row][col] = player
+        if victory(game, player):
+            game.winner = player
+        else:
+            game.turn += 1
+    return game
 
 
-def player(game):
+def get_player(game):
     if game.turn % 2 == 1:
         return player_x
     else:
