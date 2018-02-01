@@ -24,4 +24,4 @@ board_rows = 3
 board_cols = 3
 
 player_x = 'X'
-player_y = 'Y'
+player_o = 'O'
