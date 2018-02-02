@@ -11,36 +11,45 @@ class Game:
     def __init__(self, turn = 1, state = None):
         if state is None:
             state = [([None] * board_cols) for _ in range(board_rows)]
+
         self.turn = turn
         self.state = state
         self.winner = None
+        self.victory_coords = None
 
     def __repr__(self):
         s = f'Turn: {self.turn}\n'
+
         if self.winner:
-            s += f'Winner: {self.winner}\n'
+            s += f'Winner: {self.winner} @ {self.victory_coords}\n'
         else:
             s += f'Player: {get_player(self)}\n'
+
         s += 'State:\n'
         for row in self.state:
             s += str(row) + '\n'
+
         return s
 
     def __str__(self):
         return self.__repr__()
 
 
-def move(game, loc):
-    row, col = loc
+def move(game, game_coord):
+    row, col = game_coord
     if game.state[row][col] or game.winner:
         pass
     else:
         player = get_player(game)
         game.state[row][col] = player
-        if victory(game, player):
+
+        v = victory(game, player)
+        if v:
             game.winner = player
+            game.victory_coords = v
         else:
             game.turn += 1
+
     return game
 
 
@@ -59,34 +68,15 @@ def switch(player):
 
 
 def victory(game, player):
-    a = [victory_row(game, player, row) for row in range(board_rows)]
-    b = [victory_col(game, player, col) for col in range(board_cols)]
-    c = victory_diag(game, player)
+    rows = [[(r, c) for c in range(board_cols)] for r in range(board_rows)]
+    cols = [[(r, c) for r in range(board_rows)] for c in range(board_cols)]
+    diag = [list(zip(range(board_rows), range(board_cols))),
+            list(zip(range(board_rows), reversed(range(board_cols))))]
 
-    return any(a) or any(b) or c
-
-
-def victory_row(game, player, row):
-    for col in range(board_cols):
-        if game.state[row][col] != player:
-            return False
-    return True
+    for coord_set in rows + cols + diag:
+        if victory_check(game, player, coord_set):
+            return coord_set
 
 
-def victory_col(game, player, col):
-    for row in range(board_rows):
-        if game.state[row][col] != player:
-            return False
-    return True
-
-
-def victory_diag(game, player):
-    for row in range(board_rows):
-        col = row
-        if game.state[row][col] != player:
-            return False
-    for row in range(board_rows):
-        col = board_cols - 1 - row
-        if game.state[row][col] != player:
-            return False
-    return True
+def victory_check(game, player, coords):
+    return all(game.state[r][c] == player for (r, c) in coords)
