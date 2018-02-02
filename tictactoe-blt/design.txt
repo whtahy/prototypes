@@ -3,3 +3,9 @@
    a  Await input
    b  Update gamestate
    c  Update display
+
+Custom keybinds
+External img config
+External BLT config
+Save/load
+Game record/history, a la Chess
