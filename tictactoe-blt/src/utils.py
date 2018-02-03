@@ -17,3 +17,7 @@ def corner(loc):
     xc = ratio_cols * (x // ratio_cols)
     yc = ratio_rows * (y // ratio_rows)
     return xc, yc
+
+
+def cell(x, y):
+    return x * ratio_cols, y * ratio_rows

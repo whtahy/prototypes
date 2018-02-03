@@ -19,6 +19,7 @@ class Game:
         self.state = state
         self.turn = turn
         self.winner = None
+        self.history = ['Game start']
 
 
 #
@@ -27,14 +28,21 @@ class Game:
 
 def move(game, game_coord):
     r, c = game_coord
-    if game.state[r][c] or game.winner or tie(game):
-        pass
+    if game.state[r][c] or game.winner:
+        return
+    elif tie(game):
+        game.history += ['Tie']
     else:
         player = get_player(game)
         game.state[r][c] = player
+        game.history += [(player, (r, c))]
 
-        if victory(game, player):
+        v = victory(game, player)
+        if v:
             game.winner = player
+            game.history += [(player, v)]
+        elif tie(game):
+            game.history += ['Tie']
         else:
             game.turn += 1
 

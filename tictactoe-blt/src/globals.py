@@ -8,6 +8,7 @@ id_square = 0xE000
 id_x = 0xE001
 id_o = 0xE002
 id_select = 0xE003
+id_victory = 0xE004
 
 layer_board = 0
 layer_select = 16
@@ -17,16 +18,13 @@ layer_move = 48
 player_x = 'X'
 player_o = 'O'
 
-# window = 24 x 24 cells
+# window = 24 x 24 cells = 768 x 768 px
 window_rows = 24
 window_cols = 24
 
 # 1 cell = 32 x 32 px
 cell_rows = 32
 cell_cols = 32
-
-# windows = 768 x 768 px
-window_dim = window_rows * cell_rows, window_cols * cell_cols
 
 # 1 square = 256 x 256 px
 square_rows = 256

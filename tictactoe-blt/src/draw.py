@@ -8,7 +8,7 @@ import bearlibterminal.terminal as blt
 
 import gameplay
 from globals import *
-from utils import game_coord
+from utils import cell, game_coord
 
 
 #
@@ -60,6 +60,7 @@ def init_unicode():
     blt.set(f'{u_code(id_x)}: ../art/x.png')
     blt.set(f'{u_code(id_o)}: ../art/o.png')
     blt.set(f'{u_code(id_select)}: ../art/select.png')
+    blt.set(f'{u_code(id_victory)}: ../art/victory.png')
 
 
 def init_window():
@@ -81,6 +82,8 @@ def tie():
 
 def victory(game, player):
     blt.layer(layer_victory)
+    for (r, c) in gameplay.victory(game, player):
+        blt.put(*cell(r, c), id_victory)
     print("WINNER")
     print(gameplay.victory(game, player))
     print()
