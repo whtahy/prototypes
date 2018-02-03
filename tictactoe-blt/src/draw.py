@@ -6,8 +6,9 @@
 
 import bearlibterminal.terminal as blt
 
+import gameplay
 from globals import *
-from utils import to_gamecoord
+from utils import game_coord
 
 
 #
@@ -35,13 +36,15 @@ def board():
 def game(game):
     if game.turn == 1:
         init()
+    elif gameplay.tie(game):
+        tie()
     for loc in corners():
-        r, c = to_gamecoord(loc)
+        r, c = game_coord(loc)
         player = game.state[r][c]
         if player:
             move(player, loc)
     if game.winner:
-        victory()
+        victory(game, gameplay.get_player(game))
     blt.refresh()
 
 
@@ -72,9 +75,15 @@ def move(player, loc):
     blt.put(x, y, avatar(player))
 
 
-def victory():
+def tie():
+    print('It\'s a tie!')
+
+
+def victory(game, player):
     blt.layer(layer_victory)
     print("WINNER")
+    print(gameplay.victory(game, player))
+    print()
 
 
 #

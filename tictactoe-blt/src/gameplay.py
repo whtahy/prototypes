@@ -7,51 +7,41 @@
 from globals import *
 
 
+#
+# Game state
+#
+
 class Game:
     def __init__(self, turn = 1, state = None):
         if state is None:
             state = [([None] * board_cols) for _ in range(board_rows)]
 
-        self.turn = turn
         self.state = state
+        self.turn = turn
         self.winner = None
-        self.victory_coords = None
 
-    def __repr__(self):
-        s = f'Turn: {self.turn}\n'
 
-        if self.winner:
-            s += f'Winner: {self.winner} @ {self.victory_coords}\n'
-        else:
-            s += f'Player: {get_player(self)}\n'
-
-        s += 'State:\n'
-        for row in self.state:
-            s += str(row) + '\n'
-
-        return s
-
-    def __str__(self):
-        return self.__repr__()
-
+#
+# Interact
+#
 
 def move(game, game_coord):
     r, c = game_coord
-    if game.state[r][c] or game.winner:
+    if game.state[r][c] or game.winner or tie(game):
         pass
     else:
         player = get_player(game)
         game.state[r][c] = player
 
-        v = victory(game, player)
-        if v:
+        if victory(game, player):
             game.winner = player
-            game.victory_coords = v
         else:
             game.turn += 1
 
-    return game
 
+#
+# Helpers
+#
 
 def get_player(game):
     if game.turn % 2 == 1:
@@ -60,11 +50,8 @@ def get_player(game):
         return player_o
 
 
-def switch(player):
-    if player == player_x:
-        return player_o
-    else:
-        return player_x
+def tie(game):
+    return game.turn == board_rows * board_cols + 1
 
 
 def victory(game, player):

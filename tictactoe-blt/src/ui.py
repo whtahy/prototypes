@@ -8,7 +8,7 @@ import bearlibterminal.terminal as blt
 
 import draw
 import gameplay
-from utils import to_corner, to_gamecoord
+from utils import corner, game_coord
 
 
 def game_loop():
@@ -31,11 +31,11 @@ def game_loop():
 #
 
 def move(game):
-    gameplay.move(game, to_gamecoord(read_mouse()))
+    gameplay.move(game, game_coord(read_mouse()))
 
 
 def select():
-    draw.select(to_corner(read_mouse()))
+    draw.select(corner(read_mouse()))
 
 
 #
