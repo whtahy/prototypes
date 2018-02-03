@@ -9,3 +9,5 @@ External img config
 External BLT config
 Save/load
 Game record/history, a la Chess
+
+ui -> game state -> render -> ui
