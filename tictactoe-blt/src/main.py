@@ -3,24 +3,7 @@
 # Legal Code: https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt
 
 
-# TODO remove global state
-# TODO external blt config
-# TODO external keymap config
-
-
-def game_loop():
-    pass
-
-
-def start():
-    pass
-
-
-def stop():
-    pass
-
+from ui import game_loop
 
 if __name__ == '__main__':
-    start()
     game_loop()
-    stop()

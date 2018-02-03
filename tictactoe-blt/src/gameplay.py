@@ -36,12 +36,12 @@ class Game:
 
 
 def move(game, game_coord):
-    row, col = game_coord
-    if game.state[row][col] or game.winner:
+    r, c = game_coord
+    if game.state[r][c] or game.winner:
         pass
     else:
         player = get_player(game)
-        game.state[row][col] = player
+        game.state[r][c] = player
 
         v = victory(game, player)
         if v:
