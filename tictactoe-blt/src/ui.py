@@ -1,46 +1,53 @@
-# User input: keyboard + mouse
+# User input
 # Released under CC0:
 # Summary: https://creativecommons.org/publicdomain/zero/1.0/
 # Legal Code: https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt
 
 
-import bearlibterminal.terminal as blt
+from bearlibterminal import terminal as blt
 
-import draw
-import gameplay
-from utils import corner, game_coord
-
-
-def game_loop():
-    game = gameplay.Game()
-    draw.game(game)
-    while True:
-        if blt.has_input():
-            code = blt.read()
-            if code in (blt.TK_ESCAPE, blt.TK_CLOSE):
-                break
-            elif code == blt.TK_MOUSE_MOVE:
-                select()
-            elif code == blt.TK_MOUSE_LEFT:
-                move(game)
-                draw.game(game)
+import state
+from config import (
+    codes_close, codes_move, codes_select, square_cols, square_rows
+)
 
 
 #
-# Components
+# public #######################################################################
+
+def update(game):
+    if blt.has_input():
+        code = blt.read()
+        if code in codes_close:
+            return False
+        elif code in codes_move:
+            move(game)
+        elif code in codes_select:
+            select(game)
+    return True
+
+
 #
+# private ######################################################################
+
+def select(game):
+    loc = game_coord(read_mouse())
+    state.select(game, loc)
+
 
 def move(game):
-    gameplay.move(game, game_coord(read_mouse()))
-
-
-def select():
-    draw.select(corner(read_mouse()))
+    state.move(game)
 
 
 #
-# Helpers
-#
+# aux ##########################################################################
+
+def game_coord(loc):
+    x, y = loc
+    row = y // square_rows
+    col = x // square_cols
+    return row, col
+
 
 def read_mouse():
     x = blt.state(blt.TK_MOUSE_X)

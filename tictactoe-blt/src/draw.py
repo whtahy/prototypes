@@ -4,55 +4,66 @@
 # Legal Code: https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt
 
 
-import bearlibterminal.terminal as blt
-
-import gameplay
-from globals import *
-from utils import cell, game_coord
+from config import *
 
 
 #
-# Real time
-#
+# public #######################################################################
 
-def select(loc):
-    x, y = loc
-    clear_layer(layer_select)
-    blt.layer(layer_select)
-    blt.put(x, y, id_select)
+def update(game):
+    board()
+    highlight(game)
+    move(game)
+
     blt.refresh()
 
 
 #
-# Game state
-#
+# private ######################################################################
 
 def board():
     blt.layer(layer_board)
+    clear_layer()
+
     for (x, y) in corners():
         blt.put(x, y, id_square)
 
 
-def game(game):
-    if game.turn == 1:
-        init()
-    elif gameplay.tie(game):
-        tie()
-    for loc in corners():
-        r, c = game_coord(loc)
+def highlight(game):
+    blt.layer(layer_select)
+    clear_layer()
+
+    x, y = cell_coord(game.select)
+
+    blt.put(x, y, id_select)
+
+
+def move(game):
+    blt.layer(layer_move)
+    clear_layer()
+    for (r, c) in game_coords():
         player = game.state[r][c]
         if player:
-            move(player, loc)
-    if game.winner:
-        victory(game, gameplay.get_player(game))
-    blt.refresh()
+            blt.put(*cell_coord((r, c)), player)
 
+
+def tie(game):
+    print(game.history[-1])
+
+
+def victory(game):
+    print(game.history[-1])
+
+
+#
+# init #########################################################################
 
 def init():
     blt.open()
     init_unicode()
     init_window()
     board()
+    blt.refresh()
 
 
 def init_unicode():
@@ -66,70 +77,30 @@ def init_unicode():
 def init_window():
     blt.composition(blt.TK_ON)
     blt.set(f'window.size = {window_cols}x{window_rows}')
-    blt.set(f'window.cellsize = {cell_cols}x{cell_rows}')
+    blt.set(f'window.cellsize = {px_cell_cols}x{px_cell_rows}')
     blt.set(f'input.filter = [keyboard, mouse]')
 
 
-def move(player, loc):
-    x, y = loc
-    blt.layer(layer_move)
-    blt.put(x, y, avatar(player))
-
-
-def tie():
-    print('It\'s a tie!')
-
-
-def victory(game, player):
-    blt.layer(layer_victory)
-    for (r, c) in gameplay.victory(game, player):
-        blt.put(*cell(r, c), id_victory)
-    print("WINNER")
-    print(gameplay.victory(game, player))
-    print()
-
-
 #
-# Helpers
-#
+# aux ##########################################################################
 
-def avatar(player):
-    if player == player_x:
-        return id_x
-    elif player == player_o:
-        return id_o
-    else:
-        return None
+def cell_coord(loc):
+    r, c = loc
+    x = c * square_cols
+    y = r * square_rows
+    return x, y
 
 
-def bounds():
-    ls = []
-    c = corners()
-    for (x, y) in c:
-        x_range = x, x + ratio_cols - 1
-        y_range = y, y + ratio_rows - 1
-        ls.append((x_range, y_range))
-    return ls
-
-
-def clear_layer(layer):
-    blt.layer(layer)
+def clear_layer():
     blt.clear_area(0, 0, window_cols, window_rows)
 
 
 def corners():
-    ls = []
-    for i_col in range(board_cols):
-        for i_row in range(board_rows):
-            ls.append((i_col * ratio_cols, i_row * ratio_rows))
-    return ls
+    return [cell_coord(loc) for loc in game_coords()]
 
 
-def in_range(x, tup):
-    if tup[0] <= x <= tup[1]:
-        return True
-    else:
-        return False
+def game_coords():
+    return [(r, c) for r in range(board_rows) for c in range(board_cols)]
 
 
 def u_code(n):
