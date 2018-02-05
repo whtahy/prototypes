@@ -1,9 +1,10 @@
-# Render man
+# Read from state
 # Released under CC0:
 # Summary: https://creativecommons.org/publicdomain/zero/1.0/
 # Legal Code: https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt
 
 
+import state
 from config import *
 
 
@@ -11,10 +12,14 @@ from config import *
 # public #######################################################################
 
 def update(game):
-    board()
-    highlight(game)
-    move(game)
-
+    if game.select:
+        select(game)
+    else:
+        board()
+    if game.state != game.prev:
+        move(game)
+        if state.winner(game):
+            victory(game)
     blt.refresh()
 
 
@@ -29,56 +34,33 @@ def board():
         blt.put(x, y, id_square)
 
 
-def highlight(game):
+def select(game):
     blt.layer(layer_select)
     clear_layer()
 
     x, y = cell_coord(game.select)
-
     blt.put(x, y, id_select)
 
 
 def move(game):
     blt.layer(layer_move)
-    clear_layer()
-    for (r, c) in game_coords():
-        player = game.state[r][c]
-        if player:
-            blt.put(*cell_coord((r, c)), player)
+
+    x, y = cell_coord(game.select)
+    blt.put(x, y, state.player(game))
 
 
 def tie(game):
-    print(game.history[-1])
+    print('It\'s a tie')
 
 
 def victory(game):
-    print(game.history[-1])
+    blt.layer(layer_gameover)
+    clear_layer()
 
-
-#
-# init #########################################################################
-
-def init():
-    blt.open()
-    init_unicode()
-    init_window()
-    board()
-    blt.refresh()
-
-
-def init_unicode():
-    blt.set(f'{u_code(id_square)}: ../art/square.png')
-    blt.set(f'{u_code(id_x)}: ../art/x.png')
-    blt.set(f'{u_code(id_o)}: ../art/o.png')
-    blt.set(f'{u_code(id_select)}: ../art/select.png')
-    blt.set(f'{u_code(id_victory)}: ../art/victory.png')
-
-
-def init_window():
-    blt.composition(blt.TK_ON)
-    blt.set(f'window.size = {window_cols}x{window_rows}')
-    blt.set(f'window.cellsize = {px_cell_cols}x{px_cell_rows}')
-    blt.set(f'input.filter = [keyboard, mouse]')
+    _, victory_coords = state.winner(game)
+    for loc in victory_coords:
+        x, y = cell_coord(loc)
+        blt.put(x, y, id_victory)
 
 
 #
