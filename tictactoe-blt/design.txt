@@ -1,13 +1,21 @@
+About
+Released under CC0:
+Summary: https://creativecommons.org/publicdomain/zero/1.0/
+Legal Code: https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt
+
+
+Layout:
 1  Initialize (draw board, start game, etc)
-2  Game loop:
-   a  Await input
-   b  Update gamestate
-   c  Update display
+2  Game loop
+   a  User input
+   b  ui   -> Update gamestate
+   c  draw -> Update display
 
-Custom keybinds
-External img config
-External BLT config
-Save/load
-Game record/history, a la Chess
+Todos:
+- External config/globals: png, blt
+- Custom keybinds
+- Game history + replays
+- Save/load
 
-ui -> game state -> render -> ui
+- menus
+- textboxes
