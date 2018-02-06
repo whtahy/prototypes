@@ -9,22 +9,26 @@ from bearlibterminal import terminal as blt
 import draw
 import state
 import ui
-from config import init_unicode, init_window
+from config import codes_close, init_unicode, init_window
 
 
 def start():
     blt.open()
     init_window()
     init_unicode()
+    draw.board()
     blt.refresh()
 
 
 def game_loop(game):
     while True:
-        if ui.update(game):
+        if blt.has_input():
+            code = blt.read()
+            if code in codes_close:
+                break
+            ui.update(game, code)
             draw.update(game)
-        else:
-            break
+        blt.delay(1)
 
 
 if __name__ == '__main__':

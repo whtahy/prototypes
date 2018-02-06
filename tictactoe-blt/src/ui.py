@@ -7,24 +7,17 @@
 from bearlibterminal import terminal as blt
 
 import state
-from config import (
-    codes_close, codes_move, codes_select, square_cols, square_rows
-)
+from config import codes_move, codes_select, square_cols, square_rows
 
 
 #
 # public #######################################################################
 
-def update(game):
-    if blt.has_input():
-        code = blt.read()
-        if code in codes_close:
-            return False
-        elif code in codes_move:
-            move(game)
-        elif code in codes_select:
-            select(game)
-    return True
+def update(game, code):
+    if code in codes_move:
+        move(game)
+    elif code in codes_select:
+        select(game)
 
 
 #

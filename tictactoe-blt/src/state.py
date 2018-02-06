@@ -4,8 +4,6 @@
 # Legal Code: https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt
 
 
-from copy import deepcopy
-
 from config import board_cols, board_rows, id_o, id_x, turn_start
 
 
@@ -15,27 +13,28 @@ from config import board_cols, board_rows, id_o, id_x, turn_start
 class Game:
     def __init__(self):
         self.history = []
+        self.move = None
         self.select = None
-        self.state = self.prev \
-            = [([None] * board_cols) for _ in range(board_rows)]
-
-
-def select(game, loc):
-    game.prev = game.state
-    game.select = loc
+        self.state = [([None] * board_cols) for _ in range(board_rows)]
 
 
 #
 # Modify state #################################################################
 
 def move(game):
-    game.prev = deepcopy(game.state)
     r, c = game.select
     if game.state[r][c] or winner(game) or tie(game):
-        pass
+        game.move = None
     else:
+        game.move = game.select
         game.state[r][c] = player(game)
-        game.history += [game.prev]
+        game.history += [game.move]
+        print(game.history)
+
+
+def select(game, loc):
+    game.move = None
+    game.select = loc
 
 
 #
@@ -60,8 +59,8 @@ def winner(game):
         diag_dn = [list(zip(range(board_rows), reversed(range(board_cols))))]
         return diag_up + diag_dn
 
-    rows = [[(r, c) for c in range(board_cols) for r in range(board_rows)]]
-    cols = [[(r, c) for r in range(board_rows) for c in range(board_cols)]]
+    rows = [[(r, c) for c in range(board_cols)] for r in range(board_rows)]
+    cols = [[(r, c) for r in range(board_rows)] for c in range(board_cols)]
 
     for coord_set in rows + cols + diags():
         p, q = coord_set[0]

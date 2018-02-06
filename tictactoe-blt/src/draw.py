@@ -14,12 +14,12 @@ from config import *
 def update(game):
     if game.select:
         select(game)
-    else:
-        board()
-    if game.state != game.prev:
+    if game.move:
         move(game)
         if state.winner(game):
             victory(game)
+        elif state.tie(game):
+            tie(game)
     blt.refresh()
 
 
@@ -28,7 +28,6 @@ def update(game):
 
 def board():
     blt.layer(layer_board)
-    clear_layer()
 
     for (x, y) in corners():
         blt.put(x, y, id_square)
@@ -45,7 +44,7 @@ def select(game):
 def move(game):
     blt.layer(layer_move)
 
-    x, y = cell_coord(game.select)
+    x, y = cell_coord(game.move)
     blt.put(x, y, state.player(game))
 
 
@@ -55,7 +54,6 @@ def tie(game):
 
 def victory(game):
     blt.layer(layer_gameover)
-    clear_layer()
 
     _, victory_coords = state.winner(game)
     for loc in victory_coords:
