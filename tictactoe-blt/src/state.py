@@ -4,7 +4,7 @@
 # Legal Code: https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt
 
 
-from config import board_cols, board_rows, id_o, id_x, turn_start
+from config import board_cols, board_rows, id_o, id_x
 
 
 #
@@ -12,6 +12,9 @@ from config import board_cols, board_rows, id_o, id_x, turn_start
 
 class Game:
     def __init__(self):
+        self.turn_start = 1
+        self.n_players = 2
+
         self.history = []
         self.move = None
         self.select = None
@@ -42,15 +45,14 @@ def select(game, loc):
 
 def player(game):
     t = turn(game)
-    if t % 2 == turn_start:
+    if t % game.n_players == 0:
         return id_x
     else:
         return id_o
 
 
 def turn(game):
-    turn = turn_start + sum(1 for row in game.state for sq in row if sq)
-    return turn
+    return game.turn_start + len(game.history)
 
 
 def winner(game):
@@ -71,5 +73,5 @@ def winner(game):
 
 
 def tie(game):
-    turn_max = turn_start + board_rows * board_cols
+    turn_max = game.turn_start + board_rows * board_cols
     return turn(game) == turn_max and not winner(game)

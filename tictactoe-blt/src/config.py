@@ -41,8 +41,6 @@ square_cols = px_square_cols // px_cell_cols
 window_rows = board_rows * square_rows
 window_cols = board_cols * square_cols
 
-turn_start = 1
-
 
 def init_unicode():
     blt.set(f'{u_code(id_square)}: ../art/square.png')
