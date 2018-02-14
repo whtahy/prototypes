@@ -1,4 +1,3 @@
-About
 Released under CC0:
 Summary: https://creativecommons.org/publicdomain/zero/1.0/
 Legal Code: https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt
@@ -10,12 +9,3 @@ Layout:
    a  User input
    b  ui   -> Update gamestate
    c  draw -> Update display
-
-Todos:
-- External config/globals: png, blt
-- Custom keybinds
-- Game history + replays
-- Save/load
-
-- menus
-- textboxes
