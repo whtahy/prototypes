@@ -43,11 +43,11 @@ window_cols = board_cols * square_cols
 
 
 def init_unicode():
-    blt.set(f'{u_code(id_square)}: ../art/square.png')
-    blt.set(f'{u_code(id_x)}: ../art/x.png')
-    blt.set(f'{u_code(id_o)}: ../art/o.png')
-    blt.set(f'{u_code(id_select)}: ../art/select.png')
-    blt.set(f'{u_code(id_victory)}: ../art/victory.png')
+    blt.set(f'{id_square}: ../art/square.png')
+    blt.set(f'{id_x}: ../art/x.png')
+    blt.set(f'{id_o}: ../art/o.png')
+    blt.set(f'{id_select}: ../art/select.png')
+    blt.set(f'{id_victory}: ../art/victory.png')
 
 
 def init_window():
@@ -55,7 +55,3 @@ def init_window():
     blt.set(f'window.size = {window_cols}x{window_rows}')
     blt.set(f'window.cellsize = {px_cell_cols}x{px_cell_rows}')
     blt.set(f'input.filter = [keyboard, mouse]')
-
-
-def u_code(n):
-    return f'U+{hex(n)[2:]}'
