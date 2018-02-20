@@ -16,7 +16,6 @@ vel = PVector(6, 7)
 def setup():
     frameRate(60)
     size(win_w, win_h)
-    refresh()
 
 def draw():
     global pos, vel, rec_y
