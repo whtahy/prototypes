@@ -4,10 +4,8 @@ Legal Code: https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt
 
 
 Todos:
+- GUI: menus + buttons
 - External config/globals: png, blt
 - Custom keybinds
 - Game history + replays
 - Save/load
-
-- menus
-- textboxes

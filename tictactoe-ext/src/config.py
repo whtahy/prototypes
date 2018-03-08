@@ -1,57 +1,112 @@
-# Config
 # Released under CC0:
 # Summary: https://creativecommons.org/publicdomain/zero/1.0/
 # Legal Code: https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt
 
-
 from bearlibterminal import terminal as blt
 
-id_square = 0xE000
-id_x = 0xE001
-id_o = 0xE002
-id_select = 0xE003
-id_victory = 0xE004
+#
+# misc #########################################################################
 
-layer_board = 0
-layer_select = 16
-layer_gameover = 32
-layer_move = 48
+frame_delay = 1
 
-codes_close = [blt.TK_ESCAPE, blt.TK_CLOSE]
-codes_move = [blt.TK_MOUSE_LEFT]
-codes_select = [blt.TK_MOUSE_MOVE]
+#
+# game #########################################################################
 
-# game = 3 x 3 sq
-board_rows = 3
 board_cols = 3
+board_rows = 3
 
-# square = 256 x 256 px
-px_square_rows = 256
-px_square_cols = 256
+#
+# string #######################################################################
 
-# cell = 32 x 32 px
-px_cell_rows = 32
-px_cell_cols = 32
+s_exit_game = 'Exit'
+s_load = 'Load'
+s_menu_main = 'Main Menu'
+s_menu_pause = 'Game Paused'
+s_new_game = 'New Game'
+s_resume = 'Resume'
+s_save = 'Save'
+s_start = 'Start'
 
-# square = 8 x 8 cell
-square_rows = px_square_rows // px_cell_rows
-square_cols = px_square_cols // px_cell_cols
+#
+# keybinds #####################################################################
 
-# window = square * board = 24 x 24 cell
-window_rows = board_rows * square_rows
-window_cols = board_cols * square_cols
+m_click = (blt.TK_MOUSE_LEFT,)
+m_move = (blt.TK_MOUSE_MOVE,)
 
+k_shift = blt.TK_SHIFT
+k_ctrl = blt.TK_CONTROL
 
-def init_unicode():
-    blt.set(f'{id_square}: ../art/square.png')
-    blt.set(f'{id_x}: ../art/x.png')
-    blt.set(f'{id_o}: ../art/o.png')
-    blt.set(f'{id_select}: ../art/select.png')
-    blt.set(f'{id_victory}: ../art/victory.png')
+k_exit = (blt.TK_CLOSE,)
+k_enter = (blt.TK_ENTER, blt.TK_KP_ENTER,)
+k_esc = (blt.TK_ESCAPE,)
 
+k_sw = (blt.TK_KP_1,)
+k_s = (blt.TK_KP_2, blt.TK_DOWN,)
+k_se = (blt.TK_KP_3,)
+k_w = (blt.TK_KP_4, blt.TK_LEFT,)
+k_center = (blt.TK_KP_5,)
+k_e = (blt.TK_KP_6, blt.TK_RIGHT,)
+k_nw = (blt.TK_KP_7,)
+k_n = (blt.TK_KP_8, blt.TK_UP,)
+k_ne = (blt.TK_KP_9,)
 
-def init_window():
-    blt.composition(blt.TK_ON)
-    blt.set(f'window.size = {window_cols}x{window_rows}')
-    blt.set(f'window.cellsize = {px_cell_cols}x{px_cell_rows}')
-    blt.set(f'input.filter = [keyboard, mouse]')
+#
+# char #########################################################################
+
+ch_box = '[0x2588]'
+
+ch_line_x = 0x2500
+ch_line_y = 0x2502
+ch_nw = 0x250c
+ch_ne = 0x2510
+ch_sw = 0x2514
+ch_se = 0x2518
+
+ch_square = 0xE000
+ch_x = 0xE001
+ch_o = 0xE002
+ch_select = 0xE003
+ch_victory = 0xE004
+
+#
+# layer ########################################################################
+
+layer_board = 10
+layer_menu = 50
+
+#
+# screen #######################################################################
+
+screen_x = 1680
+screen_y = 1050
+
+cell_x = 16
+cell_y = 16
+
+win_multi = 0.8
+win_w = round(screen_x * win_multi / cell_x)
+win_h = round(screen_y * win_multi / cell_y)
+
+#
+# assets #######################################################################
+
+square_x = 256
+square_y = 256
+square_w = square_x // cell_x
+square_h = square_y // cell_y
+board_w = board_cols * square_w
+board_h = board_rows * square_h
+
+#
+# font #########################################################################
+
+font_x = 8
+font_y = 16
+font_margin_n = 3
+font_margin_s = 0
+
+#
+# folders ######################################################################
+
+dir_assets = '../assets/'
+save_path = '../save/save_game'
