@@ -2,12 +2,12 @@
 *.pickle
 __pycache__/
 
-# pycharm
+# jetbrains
 .idea/
+
+# vscode
+.vscode/
 
 # jupyter
 .ipynb_checkpoints/
 scratch.ipynb
-
-# other
-tabula_rasa
